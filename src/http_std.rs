@@ -7,6 +7,9 @@ use std::{
     io::{ErrorKind, Read, Write},
     net::TcpStream,
 };
+use std::future::Future;
+use std::pin::Pin;
+use std::task::{Context, Poll};
 
 fn get_req(path: &str) -> String {
     format!(
@@ -57,9 +60,6 @@ impl HttpFuture {
 
 
 // Using Standard Library Future Trait
-use std::future::Future;
-use std::pin::Pin;
-use std::task::{Context, Poll};
 impl Future for HttpFuture {
     // Associated type is set to String
     type Output = String;

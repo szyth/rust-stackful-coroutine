@@ -1,7 +1,6 @@
 // Steps:
 // run Http::new(), will return fut
 // then, keep poll()-ing the fut until the state is Poll::Ready(data)
-
 // first poll() sends the TCP request
 // later poll()s waits for the response from Server
 use crate::future::{Future, PollState};
