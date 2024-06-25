@@ -1,16 +1,9 @@
-use crate::{future::{self, Future, PollState}, http::Http};
+use crate::{
+    future::{self, Future, PollState},
+    http::Http,
+};
 
-
-// A state machine stores the state of a Pausable/resumable Function.
-// It is a data structure (and not an OS stack like in Green Threads/Fibres/Stacklful coroutine).
-// These are auto-generated when we write `async`
-enum StateMachine {
-    Start,
-    Wait(Box<dyn Future<Output = String>>), // save State of the future in wait state
-    Resolved,
-}
-
-// Coroutine (stackless) is a A stoppable/resumable Function or Task 
+// Coroutine (stackless) is a A stoppable/resumable Function or Task
 // Coroutines are compiled into StateMachine
 // At the Wait state, it can yield back to the Caller, Another Coroutine or a Scheduler
 
@@ -21,8 +14,17 @@ pub struct Coroutine {
     state: StateMachine,
 }
 
+// A state machine stores the state of a Pausable/resumable Function.
+// It is a data structure (and not an OS stack like in Green Threads/Fibres/Stacklful coroutine).
+// These are auto-generated when we write `async`
+enum StateMachine {
+    Start,
+    Wait(Box<dyn Future<Output = String>>), // save State of the future in wait state
+    Resolved,
+}
+
 impl Coroutine {
-   pub fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             state: StateMachine::Start,
         }
